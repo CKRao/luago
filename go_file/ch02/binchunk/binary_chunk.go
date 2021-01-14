@@ -9,9 +9,19 @@ const (
 	CSIZET_SIZE      = 8
 	INSTRUCTION_SIZE = 4
 	LUA_INTEGER_SIZE = 8
-	LUA_NUMBER_SIZE  = 0
-	LUAC_INT         = 0X5678
+	LUA_NUMBER_SIZE  = 8
+	LUAC_INT         = 0x5678
 	LUAC_NUM         = 370.5
+)
+
+// tag值常量
+const (
+	TAG_NIL       = 0x00
+	TAG_BOOLEAN   = 0x01
+	TAG_NUMBER    = 0x03
+	TAG_INTEGER   = 0x13
+	TAG_SHORT_STR = 0x04
+	TAG_LONG_STR  = 0x14
 )
 
 // binaryChunk 二进制Chunk
@@ -53,8 +63,23 @@ type Prototype struct {
 	UpvalueNames    []string
 }
 
+// Upvalue表
 type Upvalue struct {
+	Instack byte
+	Idx     byte
 }
 
+// LocVar 局部变量表
 type LocVar struct {
+	VarName string // 局部变量名
+	StartPC uint32 // 起始指令索引
+	EndPC   uint32 // 终止指令索引
+}
+
+// Undump
+func Undump(data []byte) *Prototype {
+	reader := &reader{data: data}
+	reader.checkHeader()
+	reader.readByte()
+	return reader.readProto("")
 }
