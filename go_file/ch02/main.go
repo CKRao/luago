@@ -68,7 +68,7 @@ func printDetail(f *binchunk.Prototype) {
 		fmt.Printf("\t%d\t%s\n", i+1, constantToString(k))
 	}
 
-	fmt.Printf("locals (%d):\n", len(f.Constants))
+	fmt.Printf("locals (%d):\n", len(f.LocVars))
 	for i, locVar := range f.LocVars {
 		fmt.Printf("\t%d\t%s\t%d\t%d\n",
 			i, locVar.VarName, locVar.StartPC+1, locVar.EndPC+1)
